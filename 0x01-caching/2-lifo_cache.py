@@ -35,7 +35,7 @@ class LIFOCache(BaseCaching):
                 self.last_key = key
 
                 # Check if we need to remove the most recent item added
-                if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                     del self.cache_data[self.last_key]
                     print("DISCARD:", self.last_key)
 
