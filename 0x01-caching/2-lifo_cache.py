@@ -25,20 +25,15 @@ class LIFOCache(BaseCaching):
         Returns:
             nothing if the key and item is none
         """
-        if key is not None and item is not None:
+        if key and item:
             if key in self.cache_data:
-                # Update the item if key exists but don’t modify the queue
-                self.cache_data[key] = item
-            else:
-                # Add the item and update last_key
-                self.cache_data[key] = item
-                self.queue.append(key)
-
-                # Check if we need to remove the most recent item added
-                if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                    last_key = self.queue.pop()
-                    del self.cache_data[last_key]
-                    print("DISCARD:", last_key)
+                self.queue.remove(key)
+            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                discard = self.queue.pop()
+                del self.cache_data[discard]
+                print("DISCARD: {}".format(discard))
+            self.queue.append(key)
+            self.cache_data[key] = item
 
     def get(self, key):
         """Gets an item from the cache by key"""
