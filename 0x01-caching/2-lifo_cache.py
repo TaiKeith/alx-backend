@@ -13,7 +13,7 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         """Initialize"""
         super().__init__()
-        self.last_key = None  # To track the last item added
+        self.queue = []  # To track insertion order for LIFO removal algo
 
     def put(self, key, item):
         """
@@ -26,21 +26,19 @@ class LIFOCache(BaseCaching):
             nothing if the key and item is none
         """
         if key is not None and item is not None:
-            # If key exists, update the item but don't add to order again
             if key in self.cache_data:
+                # Update the item if key exists but don’t modify the queue
                 self.cache_data[key] = item
             else:
                 # Add the item and update last_key
                 self.cache_data[key] = item
-                self.last_key = key
+                self.queue.append(key)
 
                 # Check if we need to remove the most recent item added
-                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                    del self.cache_data[self.last_key]
-                    print("DISCARD:", self.last_key)
-
-                    # Update the last key to the current key
-                    self.last_key = key
+                if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                    last_key = self.queue.pop()
+                    del self.cache_data[last_key]
+                    print("DISCARD:", last_key)
 
     def get(self, key):
         """Gets an item from the cache by key"""
