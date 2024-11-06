@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, g
 from flask_babel import Babel
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
+from datetime import datetime
 
 
 class Config(object):
@@ -88,8 +89,10 @@ def get_timezone():
 
 @app.route('/', strict_slashes=False)
 def index():
-    """Uses GET method to return 7-index.html"""
-    return render_template('7-index.html')
+    """Uses GET method to return index.html"""
+    user_timezone = get_timezone()
+    current_time = datetime.now(pytz.timezone(user_timezone)).strftime('%b %d, %Y, %I:%M:%S %p')
+    return render_template('index.html', current_time=current_time)
 
 
 if __name__ == "__main__":
