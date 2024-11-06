@@ -26,13 +26,18 @@ def get_locale():
     Use request.accept_languages to determine the best match with supported
     languages.
     """
+    # Check if the 'locale' parameter is in the query string and is valid
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
+    # Fall back to the best match from 'Accept-Language' headers
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/', strict_slashes=False)
 def index():
-    """Uses GET method to return 3-index.html"""
-    return render_template('3-index.html')
+    """Uses GET method to return 4-index.html"""
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
