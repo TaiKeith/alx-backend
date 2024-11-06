@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-This module contains a basic Flask-Babel app setup.
+This module contains a get_locale function with the babel.localeselector
+decorator in a Flask-Babel app to determine locale from request headers
 """
 from flask import Flask, render_template, request
 from flask_babel import Babel
@@ -30,8 +31,8 @@ def get_locale():
 
 @app.route('/', strict_slashes=False)
 def index():
-    """Uses GET method to return 1-index.html"""
-    return render_template('1-index.html')
+    """Uses GET method to return 2-index.html"""
+    return render_template('2-index.html')
 
 
 if __name__ == "__main__":
